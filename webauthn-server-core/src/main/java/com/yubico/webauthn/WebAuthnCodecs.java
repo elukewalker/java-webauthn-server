@@ -40,7 +40,7 @@ import java.security.spec.RSAPublicKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.Arrays;
 import java.util.Optional;
-import org.bouncycastle.jce.provider.BouncyCastleProvider;
+import org.bouncycastle.jcajce.provider.BouncyCastleFipsProvider;
 
 
 final class WebAuthnCodecs {
@@ -86,7 +86,7 @@ final class WebAuthnCodecs {
             new BigInteger(1, cose.get(CBORObject.FromObject(-1)).GetByteString()),
             new BigInteger(1, cose.get(CBORObject.FromObject(-2)).GetByteString())
         );
-        return KeyFactory.getInstance("RSA", new BouncyCastleProvider()).generatePublic(spec);
+        return KeyFactory.getInstance("RSA", new BouncyCastleFipsProvider()).generatePublic(spec);
     }
 
     private static ECPublicKey importCoseP256PublicKey(CBORObject cose) throws CoseException {
@@ -109,7 +109,7 @@ final class WebAuthnCodecs {
             .concat(new ByteArray(new byte[]{ 0x03, (byte) (rawKey.size() + 1), 0}))
             .concat(rawKey);
 
-        KeyFactory kFact = KeyFactory.getInstance("EdDSA", new BouncyCastleProvider());
+        KeyFactory kFact = KeyFactory.getInstance("EdDSA", new BouncyCastleFipsProvider());
         return kFact.generatePublic(new X509EncodedKeySpec(x509Key.getBytes()));
     }
 

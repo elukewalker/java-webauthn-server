@@ -19,7 +19,7 @@ dependencies {
     project(':yubico-util'),
     addVersion('com.google.guava:guava'),
     addVersion('com.fasterxml.jackson.core:jackson-databind'),
-    addVersion('org.bouncycastle:bcprov-jdk15on'),
+    addVersion('org.bouncycastle:bc-fips'),
     addVersion('org.slf4j:slf4j-api'),
   )
 

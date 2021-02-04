@@ -33,10 +33,10 @@ import java.security.cert.X509Certificate;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.List;
-import org.bouncycastle.jce.provider.BouncyCastleProvider;
+import org.bouncycastle.jcajce.provider.BouncyCastleFipsProvider;
 
 public class CertificateParser {
-    private static final Provider BC_PROVIDER = new BouncyCastleProvider();
+    private static final Provider BC_PROVIDER = new BouncyCastleFipsProvider();
     private static final Base64.Decoder BASE64_DECODER = Base64.getDecoder();
 
     private final static List<String> FIXSIG = Arrays.asList(

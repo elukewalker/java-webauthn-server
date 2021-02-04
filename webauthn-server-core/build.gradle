@@ -20,7 +20,7 @@ dependencies {
     addVersion('com.fasterxml.jackson.core:jackson-databind'),
     addVersion('com.upokecenter:cbor'),
     addVersion('org.apache.httpcomponents:httpclient'),
-    addVersion('org.bouncycastle:bcprov-jdk15on'),
+    addVersion('org.bouncycastle:bc-fips'),
     addVersion('org.slf4j:slf4j-api'),
   )
 

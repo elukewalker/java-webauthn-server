@@ -17,7 +17,7 @@ dependencies {
     addVersion('com.fasterxml.jackson.dataformat:jackson-dataformat-cbor'),
     addVersion('com.fasterxml.jackson.datatype:jackson-datatype-jdk8'),
     addVersion('com.upokecenter:cbor'),
-    addVersion('org.bouncycastle:bcprov-jdk15on'),
+    addVersion('org.bouncycastle:bc-fips'),
     addVersion('org.slf4j:slf4j-api'),
   )
 
