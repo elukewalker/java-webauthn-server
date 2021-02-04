@@ -41,14 +41,14 @@ import java.security.Signature;
 import java.security.cert.X509Certificate;
 import org.bouncycastle.asn1.sec.SECNamedCurves;
 import org.bouncycastle.asn1.x9.X9ECParameters;
-import org.bouncycastle.jce.provider.BouncyCastleProvider;
+import org.bouncycastle.jcajce.provider.BouncyCastleFipsProvider;
 import org.bouncycastle.jce.spec.ECParameterSpec;
 import org.bouncycastle.jce.spec.ECPublicKeySpec;
 import org.bouncycastle.math.ec.ECPoint;
 
 final class BouncyCastleCrypto {
 
-    private static final Provider provider = new BouncyCastleProvider();
+    private static final Provider provider = new BouncyCastleFipsProvider();
 
     public Provider getProvider() {
         return provider;
