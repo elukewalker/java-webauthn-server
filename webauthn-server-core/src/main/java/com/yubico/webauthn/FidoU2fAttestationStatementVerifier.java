@@ -31,33 +31,47 @@ import com.yubico.webauthn.data.AttestationObject;
 import com.yubico.webauthn.data.AttestationType;
 import com.yubico.webauthn.data.AttestedCredentialData;
 import com.yubico.webauthn.data.ByteArray;
+
 import java.io.IOException;
 import java.math.BigInteger;
+import java.security.AlgorithmParameters;
 import java.security.NoSuchAlgorithmException;
 import java.security.PublicKey;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.security.interfaces.ECPublicKey;
+import java.security.spec.ECGenParameterSpec;
 import java.security.spec.ECParameterSpec;
 import java.security.spec.InvalidKeySpecException;
 import java.util.Objects;
 import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
-import org.bouncycastle.jce.ECNamedCurveTable;
-import org.bouncycastle.jce.spec.ECNamedCurveParameterSpec;
+//import org.bouncycastle.jce.ECNamedCurveTable;
+//import org.bouncycastle.jce.spec.ECNamedCurveParameterSpec;
 
 
 @Slf4j
 final class FidoU2fAttestationStatementVerifier implements AttestationStatementVerifier, X5cAttestationStatementVerifier {
 
     private static boolean isP256(ECParameterSpec params) {
-        ECNamedCurveParameterSpec p256 = ECNamedCurveTable.getParameterSpec("P-256");
+        try {
+            AlgorithmParameters parameters;
+            parameters = AlgorithmParameters.getInstance("EC");
+            parameters.init(new ECGenParameterSpec("secp256r1"));
+            ECParameterSpec p256 = parameters.getParameterSpec(ECParameterSpec.class);
 
-        return (Objects.equals(p256.getN(), params.getOrder())
+            return params.equals(p256);
+        } catch (Exception e) {
+            return false;
+        }
+      
+        //ECNamedCurveParameterSpec p256 = ECNamedCurveTable.getParameterSpec("P-256");
+
+        /*return (Objects.equals(p256.getN(), params.getOrder())
             && Objects.equals(p256.getG().getAffineXCoord().toBigInteger(), params.getGenerator().getAffineX())
             && Objects.equals(p256.getG().getAffineYCoord().toBigInteger(), params.getGenerator().getAffineY())
             && Objects.equals(p256.getH(), BigInteger.valueOf(params.getCofactor()))
-        );
+        );*/
     }
 
     private X509Certificate getAttestationCertificate(AttestationObject attestationObject) throws CertificateException {

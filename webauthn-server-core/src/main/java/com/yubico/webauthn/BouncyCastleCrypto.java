@@ -31,6 +31,8 @@ package com.yubico.webauthn;
 
 import com.yubico.webauthn.data.ByteArray;
 import com.yubico.webauthn.data.COSEAlgorithmIdentifier;
+
+import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.security.KeyFactory;
 import java.security.MessageDigest;
@@ -42,9 +44,12 @@ import java.security.cert.X509Certificate;
 import org.bouncycastle.asn1.sec.SECNamedCurves;
 import org.bouncycastle.asn1.x9.X9ECParameters;
 import org.bouncycastle.jcajce.provider.BouncyCastleFipsProvider;
-import org.bouncycastle.jce.spec.ECParameterSpec;
-import org.bouncycastle.jce.spec.ECPublicKeySpec;
+//import org.bouncycastle.jce.spec.ECParameterSpec;
+//import org.bouncycastle.jce.spec.ECPublicKeySpec;
 import org.bouncycastle.math.ec.ECPoint;
+import org.bouncycastle.asn1.x509.SubjectPublicKeyInfo;
+import java.security.spec.X509EncodedKeySpec;
+import org.bouncycastle.asn1.ASN1Sequence;
 
 final class BouncyCastleCrypto {
 
@@ -79,7 +84,11 @@ final class BouncyCastleCrypto {
 
     public PublicKey decodePublicKey(ByteArray encodedPublicKey) {
         try {
-            X9ECParameters curve = SECNamedCurves.getByName("secp256r1");
+            SubjectPublicKeyInfo pub1 = SubjectPublicKeyInfo.getInstance(ASN1Sequence.getInstance(encodedPublicKey.getBytes()));
+
+            return KeyFactory.getInstance("ECDSA", provider).generatePublic(new X509EncodedKeySpec(pub1.getEncoded()));
+
+            /*X9ECParameters curve = SECNamedCurves.getByName("secp256r1");
             ECPoint point;
             try {
                 point = curve.getCurve().decodePoint(encodedPublicKey.getBytes());
@@ -99,8 +108,8 @@ final class BouncyCastleCrypto {
                                     curve.getH()
                             )
                     )
-            );
-        } catch (GeneralSecurityException e) { //This should not happen
+            );*/
+        } catch (IOException | GeneralSecurityException e) { //This should not happen
             throw new RuntimeException(
                 "Failed to decode public key: " + encodedPublicKey.getBase64Url(),
                 e
